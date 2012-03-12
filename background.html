@@ -68,6 +68,11 @@
 						}
 					
 						if (!message.sent){
+							var avatar = message.contact.avatar;
+							if (avatar.indexOf("://") == -1){
+								avatar = "https://hashblue.com" + avatar;
+							}
+							console.log(avatar);
 							postNotification(message.contact.name, message.content, message.contact.avatar);
 						}
 					}
