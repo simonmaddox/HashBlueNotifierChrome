@@ -72,6 +72,12 @@
 							if (avatar.indexOf("://") == -1){
 								avatar = "https://hashblue.com" + avatar;
 							}
+							
+							var from = message.contact.name;
+							if (from == null){
+								from = message.contact.msisdn;
+							}
+							
 							console.log(avatar);
 							postNotification(message.contact.name, message.content, message.contact.avatar);
 						}
