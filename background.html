@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>HashBlue Notifier for Chrome</title>
+	<style type="text/css" media="screen">
+		
+	</style>
+	<script src="/oauth2/oauth2.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var client_id = '';
+		var client_secret = '';
+		var redirect_uri = '';
+		
+		var auth;
+			
+		function checkLogin()
+		{
+			return localStorage["access_token"];
+		}
+		
+		function begin()
+		{
+			var accessToken = checkLogin();
+			if (!accessToken){
+				// Log in
+				//window.open("http://api.hashblue.com");
+
+				auth = new OAuth2('hashblue', {
+				  client_id: 'aVba56NH2fyL73GE',
+				  client_secret: 'T3vyB87wAtCaG2Pr6ffCpZUz5KLw7Fct',
+				  api_scope: null
+				});
+
+				auth.authorize(function() {
+				  	localStorage['access_token'] = auth.getAccessToken()
+					begin();
+				});
+				
+			} else {
+				// Already logged in
+				fetchMessages();
+				setInterval('fetchMessages()',10000);
+			}
+		}
+		
+		function fetchMessages()
+		{
+			console.log("Fetching Messages");
+			since = '';
+			if (localStorage['since']){
+				since = "?since=" + localStorage['since'];
+			} else {
+				// We need to construct our own, so we don't get all of our previous messages showing up
+				var dateString = ISODateString(new Date());
+				localStorage['since'] = dateString;
+				
+				since = "?since=" + dateString;
+			}
+			
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "https://api.hashblue.com/messages" + since, true);
+			xhr.setRequestHeader('Authorization', "OAuth " + "Jfxg5z28WUUvgLvfuh7cBk0IJE2EvaDx");
+			xhr.setRequestHeader('Accept', "application/json");
+			xhr.onreadystatechange = function() {
+			  if (xhr.readyState == 4) {
+			    var json = JSON.parse(xhr.responseText);
+				console.log("Found " + json.messages.length + " messages");
+				for (i in json.messages){
+					var message = json.messages[i];
+					if (i == 0){
+						localStorage['since'] = message.timestamp;
+					}
+					
+					if (!message.sent){
+						postNotification(message.contact.name, message.content, message.contact.avatar);
+					}
+				}
+				
+			  }
+			}
+			xhr.send();
+		}
+		
+		function postNotification(from, message, avatar)
+		{
+			var notification = webkitNotifications.createNotification(
+			  avatar,  // icon url - can be relative
+			  'New message from ' + from,  // notification title
+			  message  // notification body text
+			);
+			notification.show();
+		}
+		
+		// From: http://webcloud.se/log/JavaScript-and-ISO-8601/
+		function ISODateString(d) {
+		    function pad(n){
+		        return n < 10 ? '0'+n : n
+		    }
+		    return d.getUTCFullYear()+'-'
+		    + pad(d.getUTCMonth()+1)+'-'
+		    + pad(d.getUTCDate())+'T'
+		    + pad(d.getUTCHours())+':'
+		    + pad(d.getUTCMinutes())+':'
+		    + pad(d.getUTCSeconds())+'Z'
+		}
+		
+	</script>
+</head>
+<body onload="javascript:begin();">
+	<div id="status">Hello</div>
+</body>

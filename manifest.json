@@ -1,0 +1,21 @@
+{
+  "name": "HashBlue Notifier for Chrome",
+  "version": "1.0",
+  "description": "Be notified of incoming SMS as they arrive",
+  "browser_action": {
+    "default_icon": "hashblueIcon.png"
+  },
+  "permissions": [
+    "notifications",
+	"https://api.hashblue.com/",
+	"https://hashblue.com/"
+  ],
+  "background_page" : "background.html",
+  "content_scripts": [
+    {
+      "matches": ["https://api.hashblue.com/robots.txt*"],
+      "js": ["oauth2/oauth2_inject.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
