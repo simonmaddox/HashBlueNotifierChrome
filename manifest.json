@@ -2,8 +2,10 @@
   "name": "HashBlue Notifier for Chrome",
   "version": "1.0",
   "description": "Be notified of incoming SMS as they arrive",
-  "browser_action": {
-    "default_icon": "hashblueIcon.png"
+  "icons": {
+    "16" : "16.png",
+    "48" : "48.png",
+    "128" : "128.png"
   },
   "permissions": [
     "notifications",
