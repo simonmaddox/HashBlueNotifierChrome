@@ -20,8 +20,6 @@
 			var accessToken = checkLogin();
 			if (!accessToken){
 				// Log in
-				//window.open("http://api.hashblue.com");
-
 				auth = new OAuth2('hashblue', {
 				  client_id: 'aVba56NH2fyL73GE',
 				  client_secret: 'T3vyB87wAtCaG2Pr6ffCpZUz5KLw7Fct',
@@ -35,7 +33,7 @@
 				
 			} else {
 				// Already logged in
-				fetchMessages();
+				fetchMessages(); // setInterval waits until the first interval, rather than firing now.
 				setInterval('fetchMessages()',10000);
 			}
 		}
