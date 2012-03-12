@@ -69,7 +69,7 @@
 					
 						if (!message.sent){
 							var avatar = message.contact.avatar;
-							if (avatar.indexOf("://") == -1){
+							if (avatar.indexOf("http://") == -1 || avatar.indexOf("https://") == -1){
 								avatar = "https://hashblue.com" + avatar;
 							}
 							
@@ -78,7 +78,7 @@
 								from = message.contact.msisdn;
 							}
 							
-							postNotification(message.contact.name, message.content, message.contact.avatar);
+							postNotification(from, message.content, avatar);
 						}
 					}
 				} else {
@@ -115,5 +115,4 @@
 	</script>
 </head>
 <body onload="javascript:begin();">
-	<div id="status">Hello</div>
 </body>
