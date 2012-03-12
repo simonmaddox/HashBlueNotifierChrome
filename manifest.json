@@ -9,8 +9,7 @@
   },
   "permissions": [
     "notifications",
-	"https://api.hashblue.com/",
-	"https://hashblue.com/"
+	"https://*.hashblue.com/"
   ],
   "background_page" : "background.html",
   "content_scripts": [
