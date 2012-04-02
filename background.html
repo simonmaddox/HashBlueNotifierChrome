@@ -54,7 +54,7 @@
 			
 			var xhr = new XMLHttpRequest();
 			xhr.open("GET", "https://api.hashblue.com/messages" + since, true);
-			xhr.setRequestHeader('Authorization', "OAuth " + "Jfxg5z28WUUvgLvfuh7cBk0IJE2EvaDx");
+			xhr.setRequestHeader('Authorization', "OAuth " + localStorage['access_token']);
 			xhr.setRequestHeader('Accept', "application/json");
 			xhr.onreadystatechange = function() {
 			  if (xhr.readyState == 4) {
